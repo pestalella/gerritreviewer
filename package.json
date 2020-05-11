@@ -10,14 +10,21 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:gerritreviewer.helloWorld"
+		"onCommand:gerritreviewer.helloWorld",
+		"onCommand:gerritreviewer.getReviews"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "gerritreviewer.helloWorld",
-				"title": "Hello World"
+				"title": "Hello World",
+				"category": "GerritReviewer"
+			},
+			{
+				"command": "gerritreviewer.getReviews",
+				"title": "Get reviews",
+				"category": "GerritReviewer"
 			}
 		]
 	},

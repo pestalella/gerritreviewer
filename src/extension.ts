@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "gerritreviewer" is now active!');
+	console.log('GerritReviewer is now active!');
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -21,6 +21,23 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand('gerritreviewer.getReviews', () => {
+		  // Create and show panel
+		  const panel = vscode.window.createWebviewPanel(
+			'gerritReviews',
+			'Available Gerrit reviews',
+			vscode.ViewColumn.One,
+			{}
+		  );
+
+		  // And set its HTML content
+		  var jsonVar = { text: "example", number: 1 };
+		  var jsonStr = JSON. stringify(jsonVar);
+		  panel.webview.html = jsonStr;
+		})
+	  );
 }
 
 // this method is called when your extension is deactivated
