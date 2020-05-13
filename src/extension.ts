@@ -2,6 +2,9 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+//import * as fetch from 'node-fetch';
+const fetch = require('node-fetch');
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -32,12 +35,23 @@ export function activate(context: vscode.ExtensionContext) {
 			{}
 		  );
 
+		  var url = vscode.workspace.getConfiguration('gerritreviewer').get('gerritURL', '');
+		  console.log('url from config:[' + url + ']');
 		  // And set its HTML content
-		  var jsonVar = { text: "example", number: 1 };
-		  var jsonStr = JSON. stringify(jsonVar);
-		  panel.webview.html = jsonStr;
+		  getListOfChanges(url).then(jsonVar => {
+			var jsonStr = JSON.stringify(jsonVar[0]);
+			panel.webview.html = jsonStr;});
 		})
 	  );
+}
+
+async function getListOfChanges(url:string)  {
+	const reqChanges = url + "/changes/?q=status:open";
+	console.log("Launching request [" + reqChanges + "]");
+	return fetch(reqChanges)
+		.then((res : any) => res.text())
+		.then((text : any) => JSON.parse(text.slice(5)))
+		.catch((err : any) => console.error(err));
 }
 
 // this method is called when your extension is deactivated
